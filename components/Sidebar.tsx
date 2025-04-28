@@ -5,6 +5,14 @@ import { Menu, Plus, X } from "lucide-react";
 import { cn } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
 
+type Note = {
+  id: number;
+  title: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export default function Sidebar({
   notes,
   onSelectNote,
@@ -13,7 +21,15 @@ export default function Sidebar({
   isSidebarOpen = true,
   isMobile = false,
   toggleSidebar = () => {},
-}: any) {
+}: {
+  notes: Note[];
+  onSelectNote: (id: number) => void;
+  onNewNote: () => void;
+  selectedNoteId?: number;
+  isSidebarOpen?: boolean;
+  isMobile?: boolean;
+  toggleSidebar?: () => void;
+}) {
   return (
     <aside
       className={cn(
@@ -34,7 +50,7 @@ export default function Sidebar({
       <div className="flex-1 overflow-y-auto no-scrollbar">
         {isSidebarOpen && (
           <div className="space-y-1 p-2">
-            {notes.map((note: any) => (
+            {notes.map((note) => (
               <button
                 key={note.id}
                 onClick={() => onSelectNote(note.id)}
@@ -47,7 +63,7 @@ export default function Sidebar({
               >
                 <div className="font-medium truncate text-sm">{note.title}</div>
                 <div className="text-[0.7rem] text-muted-foreground">
-                  {formatDistanceToNow(new Date(note.updatedAt), { addSuffix: true })}
+                  {formatDistanceToNow(new Date(note.updated_at), { addSuffix: true })}
                 </div>
               </button>
             ))}
